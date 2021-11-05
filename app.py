@@ -18,7 +18,6 @@ import os
 app = Flask(__name__)
 
 ENV = 'dev'
-app.secret_key=os.urandom(12)
 # Configure SQL Alchemy
 if ENV == 'dev':
     app.debug = True
@@ -28,6 +27,7 @@ else:
     app.config['DATABASE_URI'] = 'postgres://sadvisqnhgpsei:f592e14d8a0953a894200076a9f7d646d5a7f04cd5b5c315c287515494cdb6cc@ec2-34-226-18-183.compute-1.amazonaws.com:5432/d7dl0398o6ip5r'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.secret_key=os.urandom(12)
 
 @app.after_request
 def after_request(response):
