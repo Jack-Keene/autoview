@@ -29,12 +29,12 @@ else:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key=os.urandom(12)
 
-@app.after_request
-def after_request(response):
-    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    response.headers["Expires"] = 0
-    response.headers["Pragma"] = "no-cache"
-    return response
+# @app.after_request
+# def after_request(response):
+#     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+#     response.headers["Expires"] = 0
+#     response.headers["Pragma"] = "no-cache"
+#     return response
 
 db= SQLAlchemy(app)
 
