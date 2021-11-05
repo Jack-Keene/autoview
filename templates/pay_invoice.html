@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+
+<div class = "card bg-light">
+    <article class = "card-body mx-auto" style = "max-width: 400px;">
+        <h3 class = "card-title mt-3 text-center">Invoice {{ booking.job_id }}</h3>
+        <h3 class = "card-title mt-3 text-center">£{{ booking.invoice_value }}</h3>
+
+        <form action="" method="POST">
+            <div class="form-group input-group mb-3">
+                <input type="hidden" name="_method" value="PAY">
+            </div>
+            <button class="btn btn-primary" type="submit">Pay Now</button>
+        </form>    
+    </article>
+</div>
+
+{% endblock %}

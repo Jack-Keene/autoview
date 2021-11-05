@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+<br>
+<div class="container" style="width:75%">   
+
+  <div class="d-flex mx-auto text-center row row-cols-md-2">
+    {% for vehicle in vehicles %}
+    <div class="col shadow p-3 mb-5 bg-body rounded">
+      <div class="card-header">
+        <h2 class="my-0 fw-normal" style="text-transform:capitalize"> <i class="fa fa-car"></i> {{ vehicle.model }}
+          {{ vehicle.make }} </h2>
+      </div>
+      <div class="card-body">
+        <ul class="list-unstyled mt-3 mb-4">
+          <li><strong>Registration:</strong> {{vehicle.registration}}</li>
+          <li><strong>Year:</strong> {{vehicle.year}}</li>
+          <li><strong>MOT Due Date:</strong> {{vehicle.mot_date}}</li>
+        </ul>
+        <div class="d-flex col position-relative my-2 justify-content-center align-items-center">
+          <a href="/check_availability" type="button" class="btn btn-primary rounded-pill">New Booking</a>
+          &nbsp;
+          <form action="{{url_for('delete_vehicle', id=vehicle.id)}}" method="POST">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="submit" value="Delete" class="btn btn-danger rounded-pill">
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+    <div class="d-flex col p-3 mb-5 bg-body rounded align-items-center">
+      <div class="card-body">
+          <p><a class="btn btn-lg btn-primary rounded-pill" href="/add_vehicle">Add Vehicle <i class="fa fa-plus"></i></a></p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

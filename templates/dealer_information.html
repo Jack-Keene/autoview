@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+<div class="container">
+
+    <body class="text-center">
+        <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+            <div class="col-md-10 mx-auto col-lg-5">
+                <form method='POST' class="p-4 p-md-5 border rounded-3 bg-light">
+                    <div class="d-flex">
+                        <img class="mb-4" src="../static/images/logo_new.jpg" alt="Logo"
+                            class="d-inline-block align-text-center" height="50">&nbsp;&nbsp;
+                        <h1>Edit Dealer</h1>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input autofocus autocomplete='off' type="text" name="dealer_name" class="form-control"
+                            value="{{dealer_info.dealer_name}}" readonly>
+                        <label for="floatingInput">Dealer Name</label>
+                    </div>
+                    <div class="d-flex mb-3">
+                        <input autofocus autocomplete='off' type="text" name="region" class="form-control"
+                            value="{{dealer_info.region}}" readonly>
+                        <input autofocus autocomplete='off' type="text" name="zone" class="form-control"
+                            value="{{dealer_info.zone}}" readonly>
+                    </div>
+
+                    <div class="d-flex mb-3 input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
+                        <input value="{{dealer_info.open_time}}" autofocus autocomplete="off" name="open_time"
+                            class="form-control" type="time">
+                        <input value="{{dealer_info.close_time}}" autofocus autocomplete="off" name="close_time"
+                            class="form-control" type="time">
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input autofocus autocomplete='off' type="text" name="labour_cost" class="form-control"
+                            value="{{dealer_info.labour_cost}}">
+                        <label for="floatingInput">Labour Cost (£)</label>
+                    </div>
+                    <input type="submit" value="Submit Changes" class="btn btn-primary">
+                    <!-- <button class="w-100 btn btn-lg btn-primary" type="submit">Submit Changes</button> -->
+
+                </form>
+            </div>
+        </div>
+    </body>
+</div>
+
+
+{% endblock %}

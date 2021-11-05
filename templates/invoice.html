@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+<div class="container">
+    <h1>Invoice</h1>
+
+    <table class="table table-striped table-hover" >
+        <thead>
+            <tr class="align-middle">
+                <th>Booking ID</th>
+                <th>Type</th>
+                <th>Value</th>
+                <th>Date</th>
+                <th></th>
+                <th></th>
+                <th></th>
+        </thead>
+        <tbody>
+        {% for i in invoice %}
+          <tr class="align-middle">
+                <td>{{ i.job_id}}</td>
+                <td>{{ i.invoice_type }}</td>
+                <td>£{{ i.invoice_value }}</td>
+                <td>{{ i.invoice_date }} </td>
+                <td>
+                    <form action="{{url_for('view_customer', id=i.owner_id)}}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="View Customer" class="btn btn-secondary">
+                    </form>  
+                </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+    
+    <a href="/dealer_bookings"><button class="btn btn-primary" href="">Back to all bookings</button></a>
+</div>
+
+{% endblock %}

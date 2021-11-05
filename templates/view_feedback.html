@@ -1,0 +1,114 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+<div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 my-3">
+        <div class="col card shadow-sm" style="height: 24rem;">
+            <div class=" align-items-center justify-content-center mt-3">
+                <h3><b>Customer Feedback</b></h3>
+                <h4>{{ stats.average }} from {{ stats.count }} reviews</h4>
+            </div>
+            <canvas id='barChart' width="500" height="300"></canvas>
+        </div>
+        <div class="col">
+            <div class="bd-example">
+                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item shadow active" >
+                            <div class="col card shadow-sm" style="height: 24rem;">
+                                <div class="card-body" style="background-color: rgb(245, 245, 245);">
+                                    <h2 class="my-0"></h2>
+                                  <ul class="list-unstyled mt-3 mb-4">
+                                  </ul>
+                                </div>
+                              </div>
+                        </div>
+                        {% for feedback in all_feedback %}
+                        <div class="carousel-item shadow" >
+                            <div class="col card shadow-sm" style="height: 24rem;">
+                                <div class="card-body" style="background-color: rgb(245, 245, 245);">
+                                    <h2 class="my-0">{{ feedback.submit_date }}</h2>
+                                  <ul class="list-unstyled mt-3 mb-4">
+                                    <li><strong>Overall:</strong> {{feedback.overall}}</li>
+                                    <li><strong>Speed:</strong> {{feedback.speed}}</li>
+                                    <li><strong>Quality:</strong> {{feedback.quality}}</li>
+                                  </ul>
+                                </div>
+                              </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var ctx = document.getElementById("barChart").getContext("2d");
+    var lineChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ labels | safe }},
+    datasets: [
+        {
+            label: '',
+            data: {{ data | safe }},
+        fill: false,
+        // borderColor: "grey",
+        // lineTension: 0.1,
+        backgroundColor: [
+            '#FA8128'
+        ]
+
+            }
+    ]
+    },
+    options: {
+        responsive: false,
+            indexAxis: 'y',
+                scales: {
+            y: {
+                ticks: {
+                    font: {
+                        size: 20
+                    }
+                },
+                grid: {
+                    display: false,
+                        borderWidth: 0
+                }
+            },
+            x: {
+                grid: {
+                    display: false,
+                        borderWidth: 0
+                },
+                ticks: {
+                    display: false
+                },
+                axis: {
+                    display: false
+                }
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+{% if not session.logged_in %}
+<body>
+    <div class="container py-3">
+        <header>
+            <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+                <h1 class="display-4 fw-normal">Welcome to AutoView</h1>
+                <p class="fs-5 text-muted">Aftersales support for your Business.</p>
+            </div>
+        </header>
+
+        <main>
+            <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow-sm">
+                        <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">Retail Customer</h4>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="card-title pricing-card-title">£0<small class="text-muted fw-light">/mo</small>
+                            </h1>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>Full Vehicle History</li>
+                                <li>Key Date Reminders</li>
+                                <li>Email support</li>
+                            </ul>
+                            <a href="/register" type="button" class="w-100 btn btn-lg btn-outline-primary">Sign up for
+                                free</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow-sm">
+                        <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">Dealer</h4>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="card-title pricing-card-title">£150<small class="text-muted fw-light">/mo</small>
+                            </h1>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>Customer Database</li>
+                                <li>Free Support</li>
+                                <li>Custom Dashboards</li>
+                            </ul>
+                            <a href="/register" type="button" class="w-100 btn btn-lg btn-primary">Get started</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card mb-4 rounded-3 shadow-sm">
+                        <div class="card-header py-3">
+                            <h4 class="my-0 fw-normal">Manufacturer</h4>
+                        </div>
+                        <div class="card-body">
+                            <h1 class="card-title pricing-card-title"><small class="text-muted fw-light">From
+                                </small>£500<small class="text-muted fw-light">/mo</small></h1>
+                            <ul class="list-unstyled mt-3 mb-4">
+                                <li>All of your dealers in one place</li>
+                                <li>Trend Analysis</li>
+                                <li>Customer Dashboards</li>
+                            </ul>
+                            <button type="button" class="w-100 btn btn-lg btn-primary">Contact us</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</body>
+{% endif %}
+
+{% if session.access_level == 2 %}
+{% include 'includes/_dashboard.html' %}
+
+{% elif session.access_level == 1 %}
+
+<section class="py-5 text-center container">
+    <div class="col-lg-6 col-md-8 mx-auto">
+        <h1 class="fw-normal">Welcome to AutoView, {{ session.first_name }}</h1>
+    </div>
+</section>
+
+<div class="container">
+    <div class="d-flex row mx-auto text-center">
+        <div class="col shadow p-3 mb-5 bg-body rounded">
+            <img class="bd-placeholder-img rounded-circle" width="140" height="140" src="/static/images/tools.png"
+                alt="">
+            <h2>Bookings</h2>
+            <p>View, edit and make bookings.</p>
+            <p><a class="btn btn-primary" href="/booking">View Bookings &raquo;</a></p>
+        </div>
+        &nbsp;
+        <div class="col shadow p-3 mb-5 bg-body rounded">
+            <img class="rounded-circle" width="140" height="140" src="/static/images/car.png" alt="">
+            <h2>My Vehicles</h2>
+            <p>View your registered vehicles.</p>
+            <p><a class="btn btn-primary" href="/vehicle">My Vehicles &raquo;</a></p>
+        </div>
+        &nbsp;
+        <div class="col shadow p-3 mb-5 bg-body rounded">
+            <img class="bd-placeholder-img rounded-circle" width="140" height="140" src="/static/images/feedback.png"
+                alt="">
+            <h2>Feedback</h2>
+            <p>Give feedback on your experience.</p>
+            <p><a class="btn btn-primary" href="/customer_invoices">Give Feedback &raquo;</a></p>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}

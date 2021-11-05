@@ -1,0 +1,85 @@
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link link-dark" aria-current="page" href="#">
+                            <i class="fas fa-tachometer-alt"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+              <h1 class="h2">Dashboard</h1>
+              <div class="btn-toolbar mb-2 mb-md-0">
+              </div>
+            </div>
+      
+            <!-- <canvas id='lineChart' width="300" height="300"></canvas> -->
+        <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+            <div class="col">
+                <div class="card mb-4 rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal">Bookings</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">{{ dashboard_data.bookings }}</h1>
+                        <a href="/dealer_bookings" type="button" class="w-100 btn btn-lg btn-outline-primary">Bookings</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card mb-4 rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal">Unpaid Invoices</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">{{ dashboard_data.invoices }}</h1>
+                        <a href="/dealer_bookings" type="button" class="w-100 btn btn-lg btn-outline-primary">Invoices</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card mb-4 rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                        <h4 class="my-0 fw-normal">Efficiency</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">{{ dashboard_data.efficiency }}%</h1>
+                        <a href="/dealer_bookings" type="button" class="w-100 btn btn-lg btn-outline-primary">Labour Efficiency</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+            <script>
+                var ctx = document.getElementById("lineChart").getContext("2d");
+                var lineChart = new Chart(ctx, {
+                    type:'bar',
+                    data: {
+                        labels: {{ labels | safe }},
+                        datasets: [
+                            {
+                                label: 'Invoice Value',
+                                data: {{ values | safe }},
+                                fill:false,
+                                borderColor: "grey",
+                                lineTension: 0.1
+                        }
+                    ]
+                },
+                options: {
+                    responsive:false
+                }
+                })
+            </script>
+       </main>
+
+    </div>
+</div>
+
+

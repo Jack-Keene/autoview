@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+
+<div class="container">
+<br>
+    <form class="d-flex " action="" method="POST">
+        <div >
+            <select class="form-control form-inline mb-3" name="type">
+                <option selected>Unpaid</option>
+                <option>Paid</option>
+            </select>
+        </div>
+        &nbsp;
+        <div >
+            <input type="submit" value="Filter" class="btn btn-primary">
+        </div>
+    </form>
+
+    <h1>{{status}} Invoices</h1> 
+    <table class="table table-striped table-hover" >
+        <thead>
+            <tr class="align-middle">
+                <th>Booking ID</th>
+                <th>Ramp ID</th>
+                <th>Customer Name</th>
+                <th>Vehicle Make & Model</th>
+                <th>Day</th>
+                <th>Start Time</th>
+                <th></th>
+                <th></th>
+                <th></th>
+        </thead>
+        <tbody>
+        {% for booking in bookings %}
+          <tr class="align-middle">
+                <td>{{ booking.job_id}}</td>
+                <td>{{ booking.ramp_id }}</td>
+                <td>{{ booking.first_name }} {{ booking.last_name }}</td>
+                <td>{{ booking.make }} | {{ booking.registration }}</td>
+                <td>{{ booking.day }}</td>
+                <td>{{ booking.start_time }}</td>
+                <td>
+                    <form action="{{url_for('view_customer', id=booking.owner_id)}}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="View Customer" class="btn btn-secondary">
+                    </form>  
+                </td>
+                <td>
+                    <form action="{{url_for('invoice', id=booking.job_id)}}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="submit" value="View Invoice" class="btn btn-primary">
+                    </form>  
+                </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+    </table>
+    
+</div>
+
+{% endblock %}

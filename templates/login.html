@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+<body class="text-center">
+    <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+        <div class="col-md-10 mx-auto col-lg-5">
+          <form method='POST' class="p-4 p-md-5 border rounded-3 bg-light">
+              <img  class="mb-4" src="../static/images/logo_new.jpg" alt="Logo" class="d-inline-block align-text-center" height="50">
+              <div class="form-floating mb-3">
+              <input autofocus autocomplete='off' type="text" name="username" class="form-control" placeholder = 'Username' value={{request.form.username}}>
+              <label for="floatingInput">Username</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input autocomplete='off' type="password" name="password" class="form-control" placeholder = 'Password' value={{request.form.password}}>
+              <label for="floatingPassword">Password</label>
+            </div>
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Login</button>
+            <hr class="my-4">
+            <small class="text-muted align-middle">Not a member? <a href="/register">Sign up</a></small>
+          </form>
+        </div>
+      </div>
+    </div>
+</body>
+
+
+
+
+{% endblock %}
+

@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+
+<div class="container">
+    <table class="table table-striped table-hover" >
+        <thead>
+            <tr class="align-middle">
+                <th>Booking ID</th>
+                <th>Type</th>
+                <th>Value</th>
+                <th>Date</th>
+                <th></th>
+        </thead>
+        <tbody>
+          <tr class="align-middle">
+                <td>{{ invoice.job_id}}</td>
+                <td>{{ invoice.invoice_type }}</td>
+                <td>£{{ invoice.invoice_value }}</td>
+                <td>{{ invoice.invoice_date }} </td>
+                <td>            
+                    <form action="{{url_for('customer_feedback', id=invoice.job_id)}}" method="POST">
+                        <!-- <input type="hidden" name="_method" value="PAY"> -->
+                        <input type="submit" value="Give Feedback" class="btn btn-secondary">
+                    </form>
+                </td>     
+    
+          </tr>
+        </tbody>
+    </table>
+    
+    <a href="/customer_invoices"><button class="btn btn-primary" href="">Invoices</button></a>
+    <a href="/booking"><button class="btn btn-primary" href="">Bookings</button></a>
+
+</div>
+
+{% endblock %}

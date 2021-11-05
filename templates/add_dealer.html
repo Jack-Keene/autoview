@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+
+<div class = "card bg-light">
+    <article class = "card-body mx-auto" style = "max-width: 400px;">
+        <h3 class = "card-title mt-3 text-center">Register</h3>
+        <form action="" method="POST">
+            <div class="form-group input-group mb-3">
+                <span class="input-group-text"><i class="fa fa-user"></i></span>
+                {{render_field(form.dealer_name, class_="form-control", placeholder="Dealer Name" )}}
+            </div>
+            <div class="form-group input-group mb-3">
+                <span class="input-group-text"> <i class="fa fa-building"></i> </span>
+                <select class="form-control" name = "zone">
+                    <option selected=""> Select Zone</option>
+                    {% for option in form.zone %}
+                        <option>{{render_field(option.label, class_="form-control")}}</option>
+                    {% endfor %}
+                </select>
+            </div> 
+            <div class="form-group input-group mb-3">
+                <span class="input-group-text"> <i class="fa fa-building"></i> </span>
+                <select class="form-control" name = "region">
+                    <option selected=""> Select Region</option>
+                    {% for option in form.region %}
+                        <option>{{render_field(option.label, class_="form-control")}}</option>
+                    {% endfor %}
+                </select>
+            </div> 
+            <div class="form-group input-group mb-3">
+                <span class="input-group-text"> <i class="fa fa-home"></i> </span>
+                {{render_field(form.number, class_="form-control", placeholder="Number" )}}
+                {{render_field(form.street, class_="form-control", placeholder="Street Name" )}}
+            </div>          
+            <div class="form-group input-group mb-3">
+                <span class="input-group-text"> <i class="fa fa-home"></i> </span>
+                {{render_field(form.postcode, class_="form-control", placeholder="Postcode" )}}
+            </div>
+
+            <div class="form-group input-group mb-3">        
+                <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
+                {{render_field(form.open_time, class_="form-control", placeholder="Open Time", type='time')}}
+                {{render_field(form.close_time, class_="form-control", placeholder="Close Time", type= 'time')}}
+            </div>
+
+            <div class="form-group input-group mb-3">
+                <span class="input-group-text"> <i class="fa fa-check"></i> </span>
+                {{render_field(form.labour_cost, class_="form-control", placeholder="Labour Cost")}}
+            </div>
+            <button class="btn btn-primary" type="submit">Register</button>
+        </form>    
+    </article>
+
+</div>
+
+{% endblock %}
