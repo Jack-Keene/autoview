@@ -27,7 +27,7 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sadvisqnhgpsei:f592e14d8a0953a894200076a9f7d646d5a7f04cd5b5c315c287515494cdb6cc@ec2-34-226-18-183.compute-1.amazonaws.com:5432/d7dl0398o6ip5r'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key=os.urandom(12)
+app.secret_key="secret_key"
 
 @app.after_request
 def after_request(response):
@@ -711,3 +711,6 @@ def view_feedback():
 
 if __name__ == "__main__":
     app.run() 
+
+# 2021-11-05T20:06:08.044257+00:00 app[web.1]: 10.1.39.140 - - [05/Nov/2021:20:06:08 +0000] "GET / HTTP/1.1" 200 4691 "https://autoview.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
+# 2021-11-05T20:06:25.687326+00:00 app[web.1]: 10.1.47.73 - - [05/Nov/2021:20:06:25 +0000] "GET / HTTP/1.1" 200 5684 "https://autoview.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
