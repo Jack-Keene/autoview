@@ -6,8 +6,6 @@ from flask.helpers import url_for
 from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import sha256_crypt
 from sqlalchemy.sql import func
-from sqlalchemy.sql.expression import false, label
-from sqlalchemy.sql.functions import count
 from werkzeug.utils import redirect
 from wtforms import Form, StringField, TextAreaField, PasswordField, validators, SelectField, DateTimeField, DecimalField, TimeField
 from wtforms.validators import InputRequired, ValidationError
@@ -18,7 +16,6 @@ from datetime import date, time
 import os
 
 app = Flask(__name__)
-app.debug = True
 
 ENV = 'prod'
 
@@ -31,7 +28,6 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sadvisqnhgpsei:f592e14d8a0953a894200076a9f7d646d5a7f04cd5b5c315c287515494cdb6cc@ec2-34-226-18-183.compute-1.amazonaws.com:5432/d7dl0398o6ip5r'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# app.secret_key=os.urandom(24)
 
 db= SQLAlchemy(app)
 
