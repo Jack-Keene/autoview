@@ -711,11 +711,3 @@ def view_feedback():
 
 if __name__ == "__main__":
     app.run() 
-
-
-
-2021-11-05T19:42:23.455089+00:00 app[web.1]: 10.1.22.135 - - [05/Nov/2021:19:42:23 +0000] "GET /check_availability HTTP/1.1" 200 5326 "https://autoview.herokuapp.com/booking" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
-2021-11-05T19:42:23.457519+00:00 heroku[router]: at=info method=GET path="/check_availability" host=autoview.herokuapp.com request_id=e4a12b65-7d1a-475f-9c5e-a7551a57dd39 fwd="89.36.70.29" dyno=web.1 connect=0ms service=29ms status=200 bytes=5577 protocol=https
-
-2021-11-05T19:41:22.810621+00:00 app[web.1]: 10.1.38.203 - - [05/Nov/2021:19:41:22 +0000] "GET /check_availability HTTP/1.1" 302 208 "https://autoview.herokuapp.com/booking" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
-2021-11-05T19:41:22.811658+00:00 heroku[router]: at=info method=GET path="/check_availability" host=autoview.herokuapp.com request_id=4fc26ec4-f93c-4f77-92d1-a335998c18a8 fwd="89.36.70.29" dyno=web.1 connect=0ms service=2ms status=302 bytes=490 protocol=https
