@@ -21,9 +21,11 @@ ENV = 'prod'
 
 # Configure SQL Alchemy
 if ENV == 'dev':
+    app.secret_key=os.urandom(12)
     app.debug = True
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:m4rt9r6H@localhost/autoviews'
 else:
+    app.secret_key=os.urandom(12)
     app.debug = False
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sadvisqnhgpsei:f592e14d8a0953a894200076a9f7d646d5a7f04cd5b5c315c287515494cdb6cc@ec2-34-226-18-183.compute-1.amazonaws.com:5432/d7dl0398o6ip5r'
 
@@ -704,5 +706,5 @@ def view_feedback():
     return render_template('view_feedback.html', data=data, labels=labels, stats=stats, all_feedback=all_feedback)
 
 if __name__ == "__main__":
-    app.secret_key="secret_key"
+    
     app.run() 
