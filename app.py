@@ -17,7 +17,7 @@ import os
 
 app = Flask(__name__)
 
-ENV = 'dev'
+ENV = 'prod'
 # Configure SQL Alchemy
 if ENV == 'dev':
     app.debug = True
