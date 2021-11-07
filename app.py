@@ -17,7 +17,7 @@ import os
 
 app = Flask(__name__)
 
-ENV = 'prod'
+ENV = 'dev'
 # Configure SQL Alchemy
 if ENV == 'dev':
     app.debug = True
@@ -709,7 +709,20 @@ def view_feedback():
 
     return render_template('view_feedback.html', data=data, labels=labels, stats=stats, all_feedback=all_feedback)
 
+@app.route('/set_dealer', methods= ['POST', 'GET'])
+@login_required(2)#
+def set_dealer():
+    dealers = db.session.query(Dealers).add_columns(Dealers.dealer_code, Dealers.dealer_name).all()
+    if request.method == 'POST':
+        dealer = request.form['registration'].split('| ')[1]
+        db.session.query(Users).filter(Users.id==session['id']).update(dict(dealer_code=dealer))
+        db.session.commit()
+        flash('Details Updated', 'success')
+
+    return render_template('set_dealer.html', dealers=dealers)
+
 if __name__ == "__main__":
+    create_availability()
     app.run() 
 
 # 2021-11-05T20:06:08.044257+00:00 app[web.1]: 10.1.39.140 - - [05/Nov/2021:20:06:08 +0000] "GET / HTTP/1.1" 200 4691 "https://autoview.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"

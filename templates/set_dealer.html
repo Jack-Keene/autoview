@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+<div class="container">
+    <h1>Set Dealer</h1>
+    <form action="" method="POST">
+        <div class="form-group input-group mb-3">
+            <span class="input-group-text"> <i class="fa fa-car"></i> </span>
+            <select class="form-control" name = "registration">
+                <option selected=""> Select Dealer</option>
+                {% for dealer in dealers %}
+                    <option>{{ dealer.dealer_name }} | {{ dealer.dealer_code }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>  
+</div>
+  
+
+{% endblock %}
