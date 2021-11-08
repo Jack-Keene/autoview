@@ -39,8 +39,8 @@
             <td>{{ invoice.start_time }}</td>
             <td>{{ invoice.dealer_name }}</td>
             <td>{{ invoice.registration }}</td>
-            <td>{{ invoice.make }}</td>
-            <td>{{ invoice.model }}</td>
+            <td style="text-transform:capitalize">{{ invoice.make }}</td>
+            <td style="text-transform:capitalize">{{ invoice.model }}</td>
             {% if not invoice.paid %}
             <td>            
                 <form action="{{url_for('pay_invoice', id=invoice.job_id)}}" method="POST">

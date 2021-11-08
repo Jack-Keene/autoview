@@ -3,38 +3,36 @@
 {% block body %}
 {% from "includes/_formhelpers.html" import render_field %}
 
-<div class = "card bg-light">
-    <article class = "card-body mx-auto" style = "max-width: 400px;">
-        <h3 class = "card-title mt-3 text-center">New Booking</h3>
-        <form action="" method="POST">
-            <div class="form-group input-group mb-3">
-                <span class="input-group-text"> <i class="fa fa-car"></i> </span>
-                <select class="form-control" name = "registration">
-                    <option selected=""> Select Vehicle</option>
-                    {% for registration in form.registration %}
+<body class="text-center">
+    <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+        <div class="col-md-10 mx-auto col-lg-5">
+            <form method='POST' class="p-md-5 border rounded-3 bg-light">
+                <h2>New Booking</h2>
+                <div class="mb-3">
+                    <select class="form-control" name="registration">
+                        <option selected="">Select Vehicle</option>
+                        {% for registration in form.registration %}
                         <option>{{render_field(registration.label, class_="form-control")}}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            <div class="form-group input-group mb-3">
-                <span class="input-group-text"> <i class="fa fa-car"></i> </span>
-                <select class="form-control" name = "dealer">
-                    <option selected=""> Select Dealer</option>
-                    {% for dealer in form.dealer %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <select class="form-control" name="dealer">
+                        <option selected=""> Select Dealer</option>
+                        {% for dealer in form.dealer %}
                         <option>{{render_field(dealer.label, class_="form-control")}}</option>
-                    {% endfor %}
-                </select>
-            </div>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group input-group mb-3">
+                    {{render_field(form.day, class_="form-control", placeholder="Date", type='date')}}
+                </div>
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Check Availability</button>
+            </form>
+        </div>
+    </div>
+    </div>
+</body>
 
-            <div class="form-group input-group mb-3">        
-                <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
-                {{render_field(form.day, class_="form-control", placeholder="Date", type='date')}}
-            </div>
-
-            <button class="btn btn-primary" type="submit">Check Availability</button>
-        </form>    
-    </article>
-
-</div>
 
 {% endblock %}

@@ -3,41 +3,79 @@
 {% block body %}
 {% from "includes/_formhelpers.html" import render_field %}
 
-<div class = "card bg-light">
-    <article class = "card-body mx-auto" style = "max-width: 400px;">
-        <h3 class = "card-title mt-3 text-center">New Booking</h3>
+<body class="text-center">
+    <div class="container col-xl-10 col-xxl-8 px-4 py-5">
+        <div class="col-md-10 mx-auto col-lg-5">
+            <form method='POST' class="p-md-5 border rounded-3 bg-light">
+                <h2>New Booking</h2>
+                <div class="mb-3">
+                    <select class="form-control" name="registration">
+                        <option selected=""> {{ registration }}</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <select class="form-control" name="dealer">
+                        <option selected=""> {{ dealer }}</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <select class="form-control" name="day">
+                        <option selected=""> {{ day }}</option>
+                    </select>
+                    
+                </div>
+                
+                <div class="mb-3">
+                    <select class="form-control" name="time">
+                        <option selected="">Select Time</option>
+                        {% for a in availability %}
+                        <option>{{ a.start_time }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Book</button>
+            </form>
+        </div>
+    </div>
+    </div>
+</body>
+<!-- 
+<div class="card bg-light">
+    <article class="card-body mx-auto" style="max-width: 400px;">
+        <h3 class="card-title mt-3 text-center">New Booking</h3>
         <form action="" method="POST">
             <div class="form-group input-group mb-3">
                 <span class="input-group-text"> <i class="fa fa-car"></i> </span>
-                <select class="form-control" name = "registration">
+                <select class="form-control" name="registration">
                     <option selected=""> {{ registration }}</option>
                 </select>
             </div>
             <div class="form-group input-group mb-3">
                 <span class="input-group-text"> <i class="fa fa-car"></i> </span>
-                <select class="form-control" name = "dealer">
+                <select class="form-control" name="dealer">
                     <option selected=""> {{ dealer }}</option>
                 </select>
             </div>
-            <div class="form-group input-group mb-3">        
+            <div class="form-group input-group mb-3">
                 <span class="input-group-text"> <i class="fa fa-calendar"></i> </span>
-                <select class="form-control" name = "day">
+                <select class="form-control" name="day">
                     <option selected=""> {{ day }}</option>
                 </select>
             </div>
             <div class="form-group input-group mb-3">
                 <span class="input-group-text"> <i class="fa fa-clock"></i> </span>
-                <select class="form-control" name = "time" value = {{request.form.time}}>
+                <select class="form-control" name="time" value={{request.form.time}}>
                     <option selected="">Select Time</option>
                     {% for a in availability %}
-                        <option>{{ a.start_time }}</option>
+                    <option>{{ a.start_time }}</option>
                     {% endfor %}
                 </select>
             </div>
             <button class="btn btn-primary" type="submit">Book</button>
-        </form>    
+        </form>
     </article>
 
-</div>
+</div> -->
 
 {% endblock %}

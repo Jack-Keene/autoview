@@ -17,7 +17,7 @@ import os
 
 app = Flask(__name__)
 
-ENV = 'prod'
+ENV = 'dev'
 # Configure SQL Alchemy
 if ENV == 'dev':
     app.debug = True
@@ -378,11 +378,11 @@ def booking():
 
 def my_date_check(form, field):
     if field.data < datetime.now().date():
-        raise ValidationError('')
+        raise ValidationError('got here')
 
 class BookingForm(Form):
     registration = SelectField(u'Vehicle')
-    dealer = SelectField(u'Dealer')
+    dealer = SelectField(u'Dealer', coerce=str)
     day = DateField('Date', [validators.InputRequired() , my_date_check])
 
 @app.route('/check_availability', methods = ['GET', 'POST'])
@@ -393,14 +393,15 @@ def check_availability():
 
     form = BookingForm(request.form, obj=user)
     form.registration.choices = [(u.registration, u.registration) for u in user]
-    form.dealer.choices = [(d.dealer_code, d.dealer_code) for d in dealer]
+    form.dealer.choices = [(str(d.dealer_code) +" | " + d.dealer_name, str(d.dealer_code) +" | " + d.dealer_name) for d in dealer]
 
     if request.method == 'POST':
         if not form.validate():
+            print(form.errors)
             error = 'Date must be in the future'
             return render_template('new_booking.html', error=error, form=form)
         else:
-            return redirect(url_for('new_booking', day = form.day.data, dealer=form.dealer.data, registration = form.registration.data, **request.args))
+            return redirect(url_for('new_booking', day = form.day.data, dealer=form.dealer.raw_data[0].split(' | ')[0], registration = form.registration.data, **request.args))
             # return render_template('new_booking.html', day = form.day.data, dealer=form.dealer.data, registration = form.registration.data, **request.args)
     return render_template('new_booking.html', form=form)
 
@@ -675,7 +676,8 @@ def customer_invoices():
 @app.route('/pay_invoice/<string:id>', methods=['GET','POST'])
 @login_required(1)
 def pay_invoice(id):
-    invoice =  db.session.query(Invoice).join(Booking, Invoice.job_id==Booking.job_id).join(CustomerQuality, Invoice.job_id==CustomerQuality.job_id).filter(Invoice.job_id==id).add_columns(Booking.owner_id,Booking.job_id, Booking.paid, Invoice.invoice_type, Invoice.invoice_value, Invoice.invoice_date, CustomerQuality.completed).first()
+    invoice =  db.session.query(Invoice).join(Booking, Invoice.job_id==Booking.job_id).outerjoin(CustomerQuality, Invoice.job_id==CustomerQuality.job_id).filter(Invoice.job_id==id).add_columns(Booking.owner_id,Booking.job_id, Booking.paid, Invoice.invoice_type, Invoice.invoice_value, Invoice.invoice_date, CustomerQuality.completed).first()
+    print(invoice)
     if invoice != None and not invoice.paid:
         if request.method == 'POST' and request.form['_method']=='PAY':
             print('got here')
