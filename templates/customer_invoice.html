@@ -19,12 +19,14 @@
                 <td>{{ invoice.invoice_type }}</td>
                 <td>£{{ invoice.invoice_value }}</td>
                 <td>{{ invoice.invoice_date }} </td>
+                {% if not invoice.completed %}
                 <td>            
                     <form action="{{url_for('customer_feedback', id=invoice.job_id)}}" method="POST">
                         <!-- <input type="hidden" name="_method" value="PAY"> -->
                         <input type="submit" value="Give Feedback" class="btn btn-secondary">
                     </form>
-                </td>     
+                </td>    
+                {% endif %}
     
           </tr>
         </tbody>

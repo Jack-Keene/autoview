@@ -675,7 +675,7 @@ def customer_invoices():
 @app.route('/pay_invoice/<string:id>', methods=['GET','POST'])
 @login_required(1)
 def pay_invoice(id):
-    invoice =  db.session.query(Invoice).join(Booking, Invoice.job_id==Booking.job_id).filter(Invoice.job_id==id).add_columns(Booking.owner_id,Booking.job_id, Booking.paid, Invoice.invoice_type, Invoice.invoice_value, Invoice.invoice_date).first()
+    invoice =  db.session.query(Invoice).join(Booking, Invoice.job_id==Booking.job_id).join(CustomerQuality, Invoice.job_id==CustomerQuality.job_id).filter(Invoice.job_id==id).add_columns(Booking.owner_id,Booking.job_id, Booking.paid, Invoice.invoice_type, Invoice.invoice_value, Invoice.invoice_date, CustomerQuality.completed).first()
     if invoice != None and not invoice.paid:
         if request.method == 'POST' and request.form['_method']=='PAY':
             print('got here')
