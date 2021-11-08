@@ -35,10 +35,11 @@
         <tbody>
         {% for booking in bookings %}
           <tr class="align-middle">
+
                 <td>{{ booking.job_id}}</td>
                 <td>{{ booking.ramp_id }}</td>
                 <td>{{ booking.first_name }} {{ booking.last_name }}</td>
-                <td>{{ booking.make }} | {{ booking.registration }}</td>
+                <td style="text-transform:capitalize">{{ booking.make }} | {{ booking.registration }}</td>
                 <td>{{ booking.day }}</td>
                 <td>{{ booking.start_time }}</td>
                 <td>

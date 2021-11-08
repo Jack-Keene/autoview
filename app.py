@@ -17,7 +17,7 @@ import os
 
 app = Flask(__name__)
 
-ENV = 'prod'
+ENV = 'dev'
 # Configure SQL Alchemy
 if ENV == 'dev':
     app.debug = True
@@ -203,15 +203,17 @@ class CustomerQuality(db.Model):
     overall = db.Column(db.Integer)
     speed = db.Column(db.Integer)
     quality = db.Column(db.Integer)
+    comments = db.Column(db.Text)
     submit_date = db.Column(db.DateTime(timezone=False), default=func.now())
     completed = db.Column(db.Boolean)
 
-    def __init__(self, job_id, overall, speed, quality, completed):
+    def __init__(self, job_id, overall, speed, quality, completed, comments):
         self.job_id = job_id
         self.overall = overall
         self.speed = speed
         self.quality = quality
         self.completed = completed
+        self.comments = comments
 
 @app.route('/chart')
 def chart():
@@ -327,6 +329,7 @@ def login():
                 session['id'] = result.id
                 session['type'] = result.type
                 session['access_level'] = ACCESS[result.type]
+                session['dealer_code'] = result.dealer_code
                 flash('You have successfully logged in', 'success')
                 return redirect('/')
             else:
@@ -396,7 +399,9 @@ def check_availability():
             error = 'Date must be in the future'
             return render_template('new_booking.html', error=error, form=form)
         else:
-            return render_template('new_booking.html', day = form.day.data, dealer=form.dealer.data, registration = form.registration.data, **request.args)
+            print('got here')
+            return redirect(url_for('new_booking', day = form.day.data, dealer=form.dealer.data, registration = form.registration.data, **request.args))
+            # return render_template('new_booking.html', day = form.day.data, dealer=form.dealer.data, registration = form.registration.data, **request.args)
     return render_template('new_booking.html', form=form)
 
 @app.route('/new_booking', methods = ['POST', 'GET'])
@@ -622,12 +627,20 @@ def my_dealer():
         return redirect('/dealer_information')
     return render_template("dealer_information.html", dealer_info=dealer_info)
 
-@app.route('/view_customer/<string:id>', methods=['GET', 'POST'])
+@app.route('/view_customer/<string:id>', methods=['POST'])
 @login_required(2)
 def view_customer(id):
+    stats = {}
     if request.method == 'POST':
-        customer = db.session.query(Users).all()
-        return render_template('view_customer.html', customer=customer)
+        customer = db.session.query(Users).filter(Users.id == id).first()
+        visits = db.session.query(Booking).join(Invoice, Booking.job_id==Invoice.job_id).filter(Booking.owner_id == id, Invoice.dealer_code == session['dealer_code']).add_columns(Booking.job_id, Invoice.invoice_value, Invoice.invoice_date).all()
+        stats['visits'] = len(visits)
+        stats['spend'] = round(sum([row[2] for row in visits]))
+        stats['elapsed'] = (datetime.today().date() - max([row[3] for row in visits]).date()).days
+        stats['customer'] = customer
+        stats['vehicles'] = db.session.query(Vehicles).filter(Vehicles.owner_id==id).all()
+        stats['average_spend'] = round(stats['spend']/stats['visits'])
+        return render_template('view_customer.html', stats=stats)
 
 @app.route('/invoice/<string:id>', methods=['GET', 'POST'])
 @login_required(2)
@@ -677,14 +690,14 @@ def pay_invoice(id):
 @login_required(1)
 def customer_feedback(id):
     print(list(request.form.keys()))
-    if request.method =='POST' and ['speed','quality','overall'] == list(request.form.keys()):
-        data = CustomerQuality(id, request.form['overall'], request.form['speed'], request.form['quality'], True)
+    if request.method =='POST' and ['speed','quality','overall','comments'] == list(request.form.keys()):
+        data = CustomerQuality(id, request.form['overall'], request.form['speed'], request.form['quality'], True, request.form['comments'])
+        print(request.form['comments'])
         db.session.add(data)
         db.session.commit()
         flash('Thank you for your feedback', 'success')
         return redirect('/booking')
     elif request.method =='POST': 
-        print(request.form)
         error = 'Please fill in all sections'
         return render_template('customer_feedback.html', error=error)
 
@@ -695,7 +708,7 @@ def customer_feedback(id):
 def view_feedback():
     user =  db.session.query(Users).filter(Users.id == session['id']).first()
     dealer_code = user.dealer_code
-    all_feedback = db.session.query(CustomerQuality).join(Invoice, CustomerQuality.job_id == Invoice.job_id).filter(Invoice.dealer_code == dealer_code).all()
+    all_feedback = db.session.query(CustomerQuality).join(Invoice, CustomerQuality.job_id == Invoice.job_id).join(Booking, CustomerQuality.job_id==Booking.job_id).join(Users, Booking.owner_id==Users.id).filter(Invoice.dealer_code == dealer_code).add_columns(Users.first_name, Booking.day, Users.last_name, CustomerQuality.comments, CustomerQuality.overall, CustomerQuality.quality, CustomerQuality.speed).all()
     feedback = db.session.query(func.count(CustomerQuality.overall)).join(Invoice, CustomerQuality.job_id == Invoice.job_id).filter(Invoice.dealer_code == dealer_code).group_by(CustomerQuality.overall).add_columns(CustomerQuality.overall).order_by(CustomerQuality.overall.desc()).all()
     labels = [row[1] for row in feedback]
     data = [row[0] for row in feedback]
@@ -710,11 +723,12 @@ def view_feedback():
     return render_template('view_feedback.html', data=data, labels=labels, stats=stats, all_feedback=all_feedback)
 
 @app.route('/set_dealer', methods= ['POST', 'GET'])
-@login_required(2)#
+@login_required(2)
 def set_dealer():
     dealers = db.session.query(Dealers).add_columns(Dealers.dealer_code, Dealers.dealer_name).all()
     if request.method == 'POST':
         dealer = request.form['registration'].split('| ')[1]
+        session['dealer_code'] = dealer
         db.session.query(Users).filter(Users.id==session['id']).update(dict(dealer_code=dealer))
         db.session.commit()
         flash('Details Updated', 'success')
@@ -722,7 +736,7 @@ def set_dealer():
     return render_template('set_dealer.html', dealers=dealers)
 
 if __name__ == "__main__":
-    create_availability()
+    # create_availability()
     app.run() 
 
 # 2021-11-05T20:06:08.044257+00:00 app[web.1]: 10.1.39.140 - - [05/Nov/2021:20:06:08 +0000] "GET / HTTP/1.1" 200 4691 "https://autoview.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"

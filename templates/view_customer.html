@@ -2,8 +2,67 @@
 
 {% block body %}
 {% from "includes/_formhelpers.html" import render_field %}
+<div class="container">
+    <div class="d-flex row my-3 shadow-sm position-relative justify-content-between text-center">
+        <div class="card-header">
+            <div class=" align-items-center justify-content-center mt-3">
+                <h1>{{ stats.customer.first_name }} {{ stats.customer.last_name }}</h1>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card-body">
+                <div class="card mb-4 rounded-3 shadow-sm">
+                    <div class="card-header py-3 text-center ">
+                        <h4 class="my-0 fw-normal">Total Visits</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">{{ stats.visits }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<h1>Customer Information TODO</h1>
+        <div class="col">
+            <div class="card-body">
+                <div class="card mb-4 rounded-3 shadow-sm">
+                    <div class="card-header py-3 text-center">
+                        <h4 class="my-0 fw-normal">Total Spend</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">£{{ stats.spend }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-Customer Information
+        <div class="col">
+            <div class="card-body ">
+                <div class="card rounded-3 shadow-sm">
+                    <div class="card-header py-3 ">
+                        <h4 class="my-0 fw-normal">Spend per Visit</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">£{{ stats.average_spend }}</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card-body">
+                <div class="card mb-4 rounded-3 shadow-sm">
+                    <div class="card-header py-3 text-center">
+                        <h4 class="my-0 fw-normal">Elapsed Time</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">{{ stats.elapsed }} days</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
+</div>
 {% endblock %}

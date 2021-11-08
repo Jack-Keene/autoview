@@ -28,11 +28,12 @@
                         <div class="carousel-item shadow" >
                             <div class="col card shadow-sm" style="height: 24rem;">
                                 <div class="card-body" style="background-color: rgb(245, 245, 245);">
-                                    <h2 class="my-0">{{ feedback.submit_date }}</h2>
-                                  <ul class="list-unstyled mt-3 mb-4">
-                                    <li><strong>Overall:</strong> {{feedback.overall}}</li>
-                                    <li><strong>Speed:</strong> {{feedback.speed}}</li>
-                                    <li><strong>Quality:</strong> {{feedback.quality}}</li>
+                                    <h2 class="my-0">{{ feedback.first_name }} {{ feedback.last_name }} | {{ feedback.day }} </h2>
+                                    <br>
+                                    <h4 class="text-center"><strong>Overall:</strong> {{feedback.overall}} | <strong>Speed:</strong> {{feedback.speed}} | <strong>Quality:</strong> {{feedback.quality}}</h4>
+                                    
+                                    <p><h4>Comments</h4>{{ feedback.comments }}</p>
+                                      
                                   </ul>
                                 </div>
                               </div>
