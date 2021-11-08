@@ -172,6 +172,7 @@ class Availability(db.Model):
 def create_availability():
     dealers=db.session.query(Dealers).all()
     for day in range(30):
+        print(day)
         for dealer in dealers:
             ramps = db.session.query(Ramp).filter(Ramp.dealer_code==dealer.dealer_code)
             for ramp in ramps:
@@ -399,7 +400,6 @@ def check_availability():
             error = 'Date must be in the future'
             return render_template('new_booking.html', error=error, form=form)
         else:
-            print('got here')
             return redirect(url_for('new_booking', day = form.day.data, dealer=form.dealer.data, registration = form.registration.data, **request.args))
             # return render_template('new_booking.html', day = form.day.data, dealer=form.dealer.data, registration = form.registration.data, **request.args)
     return render_template('new_booking.html', form=form)
@@ -411,7 +411,7 @@ def new_booking():
     dealer = request.args['dealer']
     registration = request.args['registration']
     
-    availability = db.session.query(Availability).join(Ramp, Availability.ramp_id == Ramp.ramp_id).join(Dealers, Ramp.dealer_code == Dealers.dealer_code).filter(Availability.day == day, Availability.availability == True, Availability.start_time > Dealers.open_time, Availability.end_time< Dealers.close_time, Dealers.dealer_code== dealer).add_columns(Availability.day, Availability.start_time, Dealers.dealer_code).all()
+    availability = db.session.query(Availability).join(Ramp, Availability.ramp_id == Ramp.ramp_id).join(Dealers, Ramp.dealer_code == Dealers.dealer_code).filter(Availability.day == day, Availability.availability == True, Availability.start_time > Dealers.open_time, Availability.end_time< Dealers.close_time, Dealers.dealer_code== dealer).add_columns(Availability.day, Availability.start_time, Dealers.dealer_code).distinct(Availability.start_time).all()
     if request.method == 'POST':
         submit_time = datetime.strptime(request.form['time'], '%H:%M:%S').time()
         hour = submit_time.hour
@@ -710,7 +710,7 @@ def view_feedback():
     dealer_code = user.dealer_code
     all_feedback = db.session.query(CustomerQuality).join(Invoice, CustomerQuality.job_id == Invoice.job_id).join(Booking, CustomerQuality.job_id==Booking.job_id).join(Users, Booking.owner_id==Users.id).filter(Invoice.dealer_code == dealer_code).add_columns(Users.first_name, Booking.day, Users.last_name, CustomerQuality.comments, CustomerQuality.overall, CustomerQuality.quality, CustomerQuality.speed).all()
     feedback = db.session.query(func.count(CustomerQuality.overall)).join(Invoice, CustomerQuality.job_id == Invoice.job_id).filter(Invoice.dealer_code == dealer_code).group_by(CustomerQuality.overall).add_columns(CustomerQuality.overall).order_by(CustomerQuality.overall.desc()).all()
-    labels = [row[1] for row in feedback]
+    labels = [5,4,3,2,1]
     data = [row[0] for row in feedback]
     count= sum([row[0] for row in feedback])
     if count != 0:
@@ -738,6 +738,3 @@ def set_dealer():
 if __name__ == "__main__":
     # create_availability()
     app.run() 
-
-# 2021-11-05T20:06:08.044257+00:00 app[web.1]: 10.1.39.140 - - [05/Nov/2021:20:06:08 +0000] "GET / HTTP/1.1" 200 4691 "https://autoview.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
-# 2021-11-05T20:06:25.687326+00:00 app[web.1]: 10.1.47.73 - - [05/Nov/2021:20:06:25 +0000] "GET / HTTP/1.1" 200 5684 "https://autoview.herokuapp.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
